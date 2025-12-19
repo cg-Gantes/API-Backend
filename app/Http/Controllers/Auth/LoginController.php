@@ -32,4 +32,20 @@ class LoginController extends Controller
             ], 401);
         }
     }
+    public function logout(Request $request)
+    {
+        try {
+            $user = $request->user();
+            $user->tokens()->delete();
+
+            return response()->json([
+                'message' => 'Logout successful',
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Failed to logout',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+    }
 }
